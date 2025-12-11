@@ -9,6 +9,7 @@ import Signup from './pages/Signup'; // <--- Import Signup
 import './App.css';
 import Listings from './pages/Listings'; // <--- Import Listings
 import Details from './pages/Details';
+import Booking from './pages/Booking';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -36,6 +37,7 @@ function App() {
             <Route path="/signup" element={<Signup />} /> {/* <--- New Route */}
             <Route path="/listings" element={<Listings />} /> {/* <--- Add Route */}
             <Route path="/details/:id" element={<Details />} />
+            <Route path="/booking/:id" element={<Booking />} />
           </Routes>
         </div>
         <Footer />

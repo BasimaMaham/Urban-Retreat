@@ -51,7 +51,7 @@ const Details = () => {
               <hr className="opacity-25 mb-4" />
 
               <div className="d-grid gap-3">
-                <Button variant="primary" size="lg" className="rounded-pill shadow">
+                <Button variant="primary" size="lg" className="rounded-pill shadow" as={Link} to={`/booking/${listing.id}`} >
                   Book This Place
                 </Button>
                 <Button variant="outline-primary" className="rounded-pill">
