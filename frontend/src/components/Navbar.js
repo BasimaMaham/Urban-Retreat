@@ -22,7 +22,7 @@ const CustomNavbar = ({ darkMode, toggleDarkMode }) => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto align-items-center">
             <Nav.Link as={Link} to="/">Home</Nav.Link>
-            <Nav.Link href="#">Listings</Nav.Link>
+            <Nav.Link as={Link} to="/listings">Listings</Nav.Link>
             
             <Button 
               variant={darkMode ? "outline-light" : "outline-dark"} 
