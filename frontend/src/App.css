@@ -1,38 +1,275 @@
-.App {
-  text-align: center;
+/* src/App.css */
+
+/* --- 1. VARIABLES (The Color Palette) --- */
+:root {
+  --font-main: 'Poppins', sans-serif;
+  
+  /* === LIGHT MODE (Keep as is) === */
+  --bg-color: #f4f7f6;
+  --text-main: #2d3436;
+  --text-secondary: #636e72;
+  --navbar-bg: rgba(255, 255, 255, 0.85);
+  --card-bg: #ffffff;
+  
+  /* Light Mode Blobs (Pastels) */
+  --blob-1: #a29bfe; 
+  --blob-2: #fab1a0; 
+  --blob-3: #55efc4;
+  --blob-opacity: 0.6;
 }
 
-.App-logo {
-  height: 40vmin;
+/* === DARK MODE (Your Custom Palette) === */
+.dark-mode {
+  /* Background Colors from your Palette */
+  --bg-color: #001C29;  /* Deepest Blue */
+  
+  /* Text Colors from your Palette */
+  --text-main: #D3D9DC;    /* Lightest Grey */
+  --text-secondary: #9EA8AE; /* Mid Grey */
+  
+  /* Component Colors */
+  --navbar-bg: rgba(0, 28, 41, 0.85); /* #001C29 with transparency */
+  --card-bg: #0E2F3F;      /* Mid Blue for cards */
+  
+  /* Dark Mode Blobs (Using your Palette's Lighter Blues) */
+  --blob-1: #194054; /* Lighter Blue */
+  --blob-2: #0E2F3F; /* Mid Blue */
+  --blob-3: #69808C; /* Muted Blue-Grey */
+  --blob-opacity: 0.5; /* Subtle Glow */
+}
+
+/* --- 2. GLOBAL RESET --- */
+body {
+  margin: 0;
+  font-family: var(--font-main);
+  background-color: var(--bg-color); /* Important: Sets body bg */
+  color: var(--text-main);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+/* Ensures the app container covers the whole screen */
+.app-container {
+  min-height: 100vh;
+  background-color: var(--bg-color); 
+  color: var(--text-main);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  position: relative;
+}
+
+/* --- 3. STICKY NAVBAR --- */
+.custom-navbar {
+  background-color: var(--navbar-bg) !important;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: background-color 0.3s ease;
+}
+
+.dark-mode .navbar-brand,
+.dark-mode .nav-link {
+  color: var(--text-main) !important;
+}
+
+/* --- 4. ANIMATED BLOBS (Now using your Palette) --- */
+.background-shapes {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  overflow: hidden;
+  z-index: 0;
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.shape {
+  position: absolute;
+  filter: blur(80px); /* Stronger blur for "Glow" effect */
+  opacity: var(--blob-opacity);
+  border-radius: 50%;
+  animation: floatAnimation 20s infinite alternate;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.shape-1 {
+  background-color: var(--blob-1);
+  width: 600px; height: 600px;
+  top: -10%; left: -10%;
+  animation-duration: 25s;
+}
+
+.shape-2 {
+  background-color: var(--blob-2);
+  width: 500px; height: 500px;
+  bottom: 10%; right: -10%;
+  animation-duration: 18s;
+}
+
+.shape-3 {
+  background-color: var(--blob-3);
+  width: 400px; height: 400px;
+  top: 40%; left: 30%;
+  animation-duration: 30s;
+}
+
+@keyframes floatAnimation {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  100% { transform: translate(60px, 40px) rotate(15deg); }
+}
+
+/* --- 5. HERO TEXT --- */
+.hero-section {
+  position: relative;
+  z-index: 1;
+  padding: 120px 0 80px 0;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 4rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: var(--text-main);
+}
+
+/* UPDATED: Solid Color (No Gradient) */
+.highlight-text {
+  color: #6c5ce7; /* Solid Purple for Light Mode */
+}
+
+/* UPDATED: Solid Color for Dark Mode (From your Palette) */
+.dark-mode .highlight-text {
+  color: #69808C; /* Solid Slate Blue */
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  max-width: 600px;
+  margin: 0 auto 30px auto;
+  color: var(--text-secondary);
+}
+
+/* --- 6. CARDS (Using #0E2F3F) --- */
+.feature-card {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  color: var(--text-main);
+  transition: transform 0.3s;
+}
+
+.dark-mode .feature-card {
+  background: var(--card-bg); /* #0E2F3F */
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--text-main);
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+}
+
+/* --- 7. LISTING CARDS --- */
+.listings-section {
+  position: relative; z-index: 1; padding: 60px 0;
+}
+
+.listing-card {
+  border: none;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: white;
+  color: #2d3436;
+  transition: transform 0.3s;
+}
+
+.dark-mode .listing-card {
+  background-color: var(--card-bg); /* #0E2F3F */
+  color: var(--text-main);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+.dark-mode .text-muted {
+  color: var(--text-secondary) !important; /* #9EA8AE */
+}
+
+.img-wrapper { height: 220px; overflow: hidden; }
+.listing-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+.listing-card:hover img { transform: scale(1.1); }
+
+/* --- 8. REVIEWS --- */
+.reviews-section {
+  position: relative; z-index: 1; padding: 80px 0;
+}
+
+.reviews-wrapper {
+  height: 400px;
+  overflow: hidden;
+  position: relative;
+}
+
+.reviews-track {
+  animation: scrollVertical 20s linear infinite;
+}
+.reviews-wrapper:hover .reviews-track { animation-play-state: paused; }
+
+@keyframes scrollVertical {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+.review-card {
+  background: rgba(255,255,255,0.8);
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  color: #2d3436;
+}
+
+.dark-mode .review-card {
+  background: var(--card-bg); /* #0E2F3F */
+  color: var(--text-main);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+/* --- 9. FOOTER --- */
+.footer-section {
+  background: white;
+  z-index: 1; position: relative;
+}
+.dark-mode .footer-section {
+  background: #00151f; /* Slightly darker than main bg for contrast */
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+/* --- 10. AUTH PAGES & FORMS --- */
+.custom-input {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 10px 15px;
+}
+
+.custom-input:focus {
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+  border-color: #6c5ce7;
+}
+
+/* Dark Mode Input Styling */
+.dark-mode .custom-input {
+  background-color: rgba(0, 0, 0, 0.2); /* Transparent dark */
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.dark-mode .custom-input:focus {
+  background-color: rgba(0, 0, 0, 0.4);
+  border-color: #69808C; /* Slate Blue from your palette */
+  color: white;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Fix the label colors in form groups */
+.dark-mode .form-label {
+  color: var(--text-main);
 }
