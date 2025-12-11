@@ -3,8 +3,6 @@ import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 
 const Footer = () => {
-  // Helper to prevent warnings
-  const preventDefault = (e) => e.preventDefault();
 
   return (
     <footer className="footer-section pt-5 pb-3">

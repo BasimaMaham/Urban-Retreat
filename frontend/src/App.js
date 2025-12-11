@@ -8,6 +8,7 @@ import Login from './pages/Login';   // <--- Import Login
 import Signup from './pages/Signup'; // <--- Import Signup
 import './App.css';
 import Listings from './pages/Listings'; // <--- Import Listings
+import Details from './pages/Details';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -34,6 +35,7 @@ function App() {
             <Route path="/login" element={<Login />} />   {/* <--- New Route */}
             <Route path="/signup" element={<Signup />} /> {/* <--- New Route */}
             <Route path="/listings" element={<Listings />} /> {/* <--- Add Route */}
+            <Route path="/details/:id" element={<Details />} />
           </Routes>
         </div>
         <Footer />

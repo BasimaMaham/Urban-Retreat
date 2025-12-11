@@ -1,5 +1,6 @@
 // src/pages/Listings.js
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Container, Row, Col, Card, Form, InputGroup, Button } from 'react-bootstrap';
 import listingsData from '../data/listingsData'; // Import the data
 
@@ -58,7 +59,7 @@ const Listings = () => {
                         <span className="fw-bold fs-5 text-primary">${item.price}</span>
                         <span className="text-muted small"> / night</span>
                       </div>
-                      <Button variant="outline-primary" size="sm" className="rounded-pill">
+                      <Button variant="outline-primary" size="sm" className="rounded-pill" as ={Link} to={`/details/${item.id}`}>
                         Details
                       </Button>
                     </div>

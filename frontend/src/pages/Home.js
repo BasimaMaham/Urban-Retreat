@@ -1,5 +1,6 @@
 // src/pages/Home.js
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Container, Button, Row, Col, Card } from 'react-bootstrap';
 
 const Home = () => {
@@ -119,7 +120,7 @@ const Home = () => {
                     </Card.Text>
                     <div className="d-flex justify-content-between align-items-center mt-3">
                       <span className="fw-bold text-primary fs-5">{item.price}</span>
-                      <Button variant="primary" size="sm" className="rounded-pill px-3">Book</Button>
+                      <Button variant="primary" size="sm" className="rounded-pill px-3" as={Link} to={`/details/${item.id}`}>Book</Button>
                     </div>
                   </Card.Body>
                 </Card>
