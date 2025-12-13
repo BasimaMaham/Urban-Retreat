@@ -10,6 +10,11 @@ import './App.css';
 import Listings from './pages/Listings'; // <--- Import Listings
 import Details from './pages/Details';
 import Booking from './pages/Booking';
+import HelpCenter from './pages/HelpCenter';     // <--- Import Page
+import FloatingHelp from './components/FloatingHelp'; // <--- Import Button
+import ContactSupport from './pages/ContactSupport';
+import Reviews from './pages/Reviews';
+import About from './pages/About';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -38,9 +43,14 @@ function App() {
             <Route path="/listings" element={<Listings />} /> {/* <--- Add Route */}
             <Route path="/details/:id" element={<Details />} />
             <Route path="/booking/:id" element={<Booking />} />
+            <Route path="/help" element={<HelpCenter />} /> {/* <--- New Route */}
+            <Route path="/contact" element={<ContactSupport />} />
+            <Route path="/reviews" element={<Reviews />} /> {/* <--- New Route */}
+            <Route path="/about" element={<About />} />
           </Routes>
         </div>
         <Footer />
+        <FloatingHelp /> {/* <--- Placed here so it shows on ALL pages */}
       </Router>
     </div>
   );

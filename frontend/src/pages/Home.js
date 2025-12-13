@@ -3,14 +3,14 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Button, Row, Col, Card } from 'react-bootstrap';
 
+  // DATA BANKS for unique details
+const CITIES = ["New York, NY", "Los Angeles, CA", "Miami, FL", "Chicago, IL", "Austin, TX", "Seattle, WA"];
+const TITLES = ["Modern Downtown Loft", "Luxury Beach Villa", "Cozy Mountain Cabin", "Historic Townhouse", "Minimalist Studio", "Grand Estate"];
+const PRICES = ["$120", "$350", "$180", "$210", "$95", "$500"];
+const RATINGS = [4.8, 4.9, 4.7, 5.0, 4.5, 4.9];
+
 const Home = () => {
   const [listings, setListings] = useState([]);
-
-  // DATA BANKS for unique details
-  const CITIES = ["New York, NY", "Los Angeles, CA", "Miami, FL", "Chicago, IL", "Austin, TX", "Seattle, WA"];
-  const TITLES = ["Modern Downtown Loft", "Luxury Beach Villa", "Cozy Mountain Cabin", "Historic Townhouse", "Minimalist Studio", "Grand Estate"];
-  const PRICES = ["$120", "$350", "$180", "$210", "$95", "$500"];
-  const RATINGS = [4.8, 4.9, 4.7, 5.0, 4.5, 4.9];
 
   useEffect(() => {
     fetch('http://localhost:5001/api/houses')
@@ -61,8 +61,8 @@ const Home = () => {
             Discover luxury urban apartments, cozy guest houses, and unique homes.
           </p>
           <div className="d-flex justify-content-center gap-3">
-            <Button variant="primary" size="lg" className="rounded-pill px-5 shadow-lg">Explore Places</Button>
-            <Button variant="outline-secondary" size="lg" className="rounded-pill px-5">Learn More</Button>
+            <Button variant="primary" size="lg" className="rounded-pill px-5 shadow-lg" as={Link} to="/listings">Explore Places</Button>
+            <Button variant="outline-secondary" size="lg" className="rounded-pill px-5" as={Link} to="/about">Learn More</Button>
           </div>
         </Container>
       </div>
@@ -131,7 +131,7 @@ const Home = () => {
               <p className="text-muted">
                 See what our community has to say about their stays. We pride ourselves on transparency and quality service.
               </p>
-              <Button variant="outline-primary" className="rounded-pill mt-3">Read all reviews</Button>
+              <Button variant="outline-primary" className="rounded-pill mt-3" as={Link} to="/reviews">Read all reviews</Button>
             </Col>
             
             <Col md={6} className="offset-md-1">

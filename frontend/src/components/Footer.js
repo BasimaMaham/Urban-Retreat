@@ -1,6 +1,7 @@
 // src/components/Footer.js
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
 
@@ -18,7 +19,7 @@ const Footer = () => {
           <Col md={2} xs={6} className="mb-4">
             <h6 className="fw-bold mb-3">Company</h6>
             <ul className="list-unstyled small">
-              <li className="mb-2"><a href="/" className="text-decoration-none text-muted">About Us</a></li>
+              <li className="mb-2"><Link to="/about" className="text-decoration-none text-muted">About Us</Link></li>
               <li className="mb-2"><a href="/" className="text-decoration-none text-muted">Careers</a></li>
               <li className="mb-2"><a href="/" className="text-decoration-none text-muted">Press</a></li>
             </ul>
@@ -26,7 +27,7 @@ const Footer = () => {
           <Col md={2} xs={6} className="mb-4">
             <h6 className="fw-bold mb-3">Support</h6>
             <ul className="list-unstyled small">
-              <li className="mb-2"><a href="/" className="text-decoration-none text-muted">Help Center</a></li>
+              <li className="mb-2"><Link to="/help" className="text-decoration-none text-muted">Help Center</Link></li>
               <li className="mb-2"><a href="/" className="text-decoration-none text-muted">Safety</a></li>
               <li className="mb-2"><a href="/" className="text-decoration-none text-muted">Cancellation</a></li>
             </ul>

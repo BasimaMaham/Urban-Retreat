@@ -1,9 +1,17 @@
 // src/pages/Signup.js
 import React from 'react';
 import { Container, Form, Button, Card } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // 1. Import useNavigate
 
 const Signup = () => {
+  const navigate = useNavigate(); // 2. Initialize the hook
+
+  // 3. Create the submit handler
+  const handleSignup = (e) => {
+    e.preventDefault(); // Stop refresh
+    navigate('/listings'); // Redirect to listings
+  };
+
   return (
     <div className="auth-page d-flex align-items-center justify-content-center" style={{ minHeight: '80vh' }}>
       <Container style={{ maxWidth: '450px' }}>
@@ -12,7 +20,8 @@ const Signup = () => {
             <h2 className="text-center fw-bold mb-4">Create Account</h2>
             <p className="text-center text-muted mb-4">Join Urban Retreat today</p>
             
-            <Form>
+            {/* 4. Attach the handler here */}
+            <Form onSubmit={handleSignup}>
               <Form.Group className="mb-3" controlId="formName">
                 <Form.Label className="fw-bold small">Full Name</Form.Label>
                 <Form.Control type="text" placeholder="John Doe" className="custom-input" />

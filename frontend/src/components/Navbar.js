@@ -2,7 +2,7 @@
 import React from 'react';
 import { Navbar, Container, Nav, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import Logo from './Logo'; // <--- IMPORT THIS
+import Logo from './Logo';
 
 const CustomNavbar = ({ darkMode, toggleDarkMode }) => {
   return (
@@ -12,7 +12,6 @@ const CustomNavbar = ({ darkMode, toggleDarkMode }) => {
       variant={darkMode ? 'dark' : 'light'}
     >
       <Container>
-        {/* REPLACED BRAND WITH LOGO COMPONENT */}
         <Navbar.Brand as={Link} to="/">
           <Logo />
         </Navbar.Brand>
@@ -23,6 +22,9 @@ const CustomNavbar = ({ darkMode, toggleDarkMode }) => {
           <Nav className="ms-auto align-items-center">
             <Nav.Link as={Link} to="/">Home</Nav.Link>
             <Nav.Link as={Link} to="/listings">Listings</Nav.Link>
+            <Nav.Link as={Link} to="/about">About Us</Nav.Link>
+            <Nav.Link as={Link} to="/reviews">Reviews</Nav.Link>
+            <Nav.Link as={Link} to="/contact">Contact</Nav.Link>
             
             <Button 
               variant={darkMode ? "outline-light" : "outline-dark"} 

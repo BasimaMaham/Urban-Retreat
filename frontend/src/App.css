@@ -273,3 +273,55 @@ body {
 .dark-mode .form-label {
   color: var(--text-main);
 }
+
+/* --- 11. ACCORDION DARK MODE FIX --- */
+.accordion-button {
+  background-color: transparent !important;
+  color: var(--text-main) !important;
+  box-shadow: none !important; /* Removes blue glow on click */
+}
+
+.accordion-button:not(.collapsed) {
+  color: var(--primary-color) !important;
+  font-weight: bold;
+}
+
+.accordion-item {
+  background-color: transparent !important;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  color: var(--text-main);
+}
+
+.dark-mode .accordion-item {
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* --- 12. ACCORDION ARROW FIX --- */
+/* Inverts the black arrow to white only in Dark Mode */
+.dark-mode .accordion-button::after {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* --- FORCE SOLID BUTTONS (The "Login Button" Look) --- */
+.btn-primary {
+  /* 1. Force the background to be SOLID blue */
+  background-color: #0d6efd !important; /* Standard Bootstrap Blue */
+  
+  /* 2. Force the text to be SOLID white */
+  color: white !important;
+  
+  /* 3. Remove any transparency or glass effects */
+  opacity: 1 !important;
+  backdrop-filter: none !important;
+  background-image: none !important;
+  
+  /* 4. Make it punchy */
+  border: none !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important; /* Tiny shadow for depth */
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7 !important; /* Slightly darker blue on hover */
+  transform: translateY(-2px);
+}
