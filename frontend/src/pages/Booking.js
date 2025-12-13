@@ -1,51 +1,95 @@
 // src/pages/Booking.js
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
-import listingsData from '../data/listingsData';
 
 const Booking = () => {
   const { id } = useParams();
-  const listing = listingsData.find((item) => item.id === parseInt(id));
-  
-  // 1. STATE FOR DATES
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // 1. RECEIVE DATA from Details Page
+  const listing = location.state?.house;
+
+  // 2. STATE FOR DATES & FORM DATA
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [nights, setNights] = useState(0);
   const [isPaid, setIsPaid] = useState(false);
 
-  // 2. CALCULATE NIGHTS AUTOMATICALLY
+  // New State: Track form inputs to validate them
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    cardNumber: "",
+    expiry: "",
+    cvc: ""
+  });
+
+  // New State: To show error messages
+  const [showErrors, setShowErrors] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // 3. CALCULATE NIGHTS AUTOMATICALLY
   useEffect(() => {
     if (checkIn && checkOut) {
       const start = new Date(checkIn);
       const end = new Date(checkOut);
-      
-      // Calculate difference in time
       const diffTime = end - start;
-      // Calculate difference in days (1000ms * 60s * 60m * 24h)
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-      if (diffDays > 0) {
-        setNights(diffDays);
-      } else {
-        setNights(0); // Prevent negative or zero nights
-      }
+      setNights(diffDays > 0 ? diffDays : 0);
     }
   }, [checkIn, checkOut]);
 
-  if (!listing) return <h2 className="text-center mt-5">Listing not found</h2>;
+  // If no data, return error
+  if (!listing) return <div className="text-center mt-5 pt-5"><h2>Error: No booking selected.</h2><Button onClick={() => navigate('/')}>Go Home</Button></div>;
 
-  // 3. DYNAMIC CALCULATIONS
-  const total = listing.price * nights;
-  const serviceFee = nights > 0 ? 40 : 0; // Only charge fee if dates selected
+  // 4. CLEAN PRICE HELPER
+  const getRawPrice = (price) => {
+    if (typeof price === 'number') return price;
+    return parseInt(price.toString().replace(/[^0-9]/g, '')) || 0;
+  };
+
+  const pricePerNight = getRawPrice(listing.price);
+  const total = pricePerNight * nights;
+  const serviceFee = nights > 0 ? 40 : 0;
   const grandTotal = total + serviceFee;
+
+  // --- NEW HANDLERS ---
+  
+  // Update state when user types
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // Validate before paying
+  const handlePayment = () => {
+    // 1. Check if dates are selected
+    if (nights === 0) {
+      setErrorMessage("Please select valid check-in and check-out dates.");
+      return;
+    }
+
+    // 2. Check if all text fields are filled
+    const allFilled = Object.values(formData).every(val => val.trim() !== "");
+
+    if (!allFilled) {
+      setShowErrors(true); // This triggers the red borders
+      setErrorMessage("Please fill these mandatory details to make payment.");
+    } else {
+      setShowErrors(false);
+      setErrorMessage("");
+      setIsPaid(true); // Success!
+    }
+  };
 
   return (
     <div className="booking-page" style={{ paddingTop: '100px', minHeight: '100vh' }}>
       <Container>
-        <Link to={`/details/${id}`} className="text-decoration-none mb-4 d-inline-block">
+        <Button variant="link" onClick={() => navigate(-1)} className="text-decoration-none mb-4 d-inline-block p-0">
           &larr; Back to Details
-        </Link>
+        </Button>
 
         <h2 className="fw-bold mb-4">Confirm your stay</h2>
 
@@ -54,7 +98,6 @@ const Booking = () => {
           <Col md={7} className="mb-4">
             <div className="feature-card p-4 border-0">
               
-              {/* --- NEW SECTION: DATE SELECTION --- */}
               <h4 className="mb-3">Your Trip</h4>
               <Row className="mb-4">
                 <Col md={6}>
@@ -64,6 +107,7 @@ const Booking = () => {
                     className="custom-input"
                     value={checkIn}
                     onChange={(e) => setCheckIn(e.target.value)}
+                    isInvalid={showErrors && !checkIn}
                   />
                 </Col>
                 <Col md={6}>
@@ -73,6 +117,7 @@ const Booking = () => {
                     className="custom-input"
                     value={checkOut}
                     onChange={(e) => setCheckOut(e.target.value)}
+                    isInvalid={showErrors && !checkOut}
                   />
                 </Col>
               </Row>
@@ -83,16 +128,40 @@ const Booking = () => {
                 <Row>
                   <Col md={6} className="mb-3">
                     <Form.Label>First Name</Form.Label>
-                    <Form.Control type="text" placeholder="John" className="custom-input" />
+                    <Form.Control 
+                      type="text" 
+                      placeholder="Soban" 
+                      className="custom-input" 
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleInputChange}
+                      isInvalid={showErrors && !formData.firstName}
+                    />
                   </Col>
                   <Col md={6} className="mb-3">
                     <Form.Label>Last Name</Form.Label>
-                    <Form.Control type="text" placeholder="Doe" className="custom-input" />
+                    <Form.Control 
+                      type="text" 
+                      placeholder="Khan" 
+                      className="custom-input" 
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleInputChange}
+                      isInvalid={showErrors && !formData.lastName}
+                    />
                   </Col>
                 </Row>
                 <Form.Group className="mb-3">
                   <Form.Label>Email Address</Form.Label>
-                  <Form.Control type="email" placeholder="john@example.com" className="custom-input" />
+                  <Form.Control 
+                    type="email" 
+                    placeholder="Soban@gmail.com" 
+                    className="custom-input" 
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    isInvalid={showErrors && !formData.email}
+                  />
                 </Form.Group>
 
                 <h4 className="mt-4 mb-3">Payment Info</h4>
@@ -101,16 +170,40 @@ const Booking = () => {
                 </div>
                 <Form.Group className="mb-3">
                   <Form.Label>Card Number</Form.Label>
-                  <Form.Control type="text" placeholder="0000 0000 0000 0000" className="custom-input" />
+                  <Form.Control 
+                    type="text" 
+                    placeholder="0000 0000 0000 0000" 
+                    className="custom-input" 
+                    name="cardNumber"
+                    value={formData.cardNumber}
+                    onChange={handleInputChange}
+                    isInvalid={showErrors && !formData.cardNumber}
+                  />
                 </Form.Group>
                 <Row>
                   <Col md={6} className="mb-3">
                     <Form.Label>Expiry</Form.Label>
-                    <Form.Control type="text" placeholder="MM/YY" className="custom-input" />
+                    <Form.Control 
+                      type="text" 
+                      placeholder="MM/YY" 
+                      className="custom-input" 
+                      name="expiry"
+                      value={formData.expiry}
+                      onChange={handleInputChange}
+                      isInvalid={showErrors && !formData.expiry}
+                    />
                   </Col>
                   <Col md={6} className="mb-3">
                     <Form.Label>CVC</Form.Label>
-                    <Form.Control type="text" placeholder="123" className="custom-input" />
+                    <Form.Control 
+                      type="text" 
+                      placeholder="123" 
+                      className="custom-input" 
+                      name="cvc"
+                      value={formData.cvc}
+                      onChange={handleInputChange}
+                      isInvalid={showErrors && !formData.cvc}
+                    />
                   </Col>
                 </Row>
               </Form>
@@ -130,7 +223,7 @@ const Booking = () => {
                   />
                   <div>
                     <h6 className="fw-bold mb-1">{listing.title}</h6>
-                    <small className="text-muted">{listing.location}</small>
+                    <small className="text-muted">{listing.location || listing.city}</small>
                     <div className="small mt-1">★ {listing.rating} (Reviewers)</div>
                   </div>
                 </div>
@@ -139,9 +232,8 @@ const Booking = () => {
 
                 <h5 className="fw-bold mb-3">Price Details</h5>
                 
-                {/* DYNAMIC PRICE DISPLAY */}
                 <div className="d-flex justify-content-between mb-2">
-                  <span>${listing.price} x {nights} nights</span>
+                  <span>${pricePerNight} x {nights} nights</span>
                   <span>${total}</span>
                 </div>
                 <div className="d-flex justify-content-between mb-2">
@@ -156,13 +248,20 @@ const Booking = () => {
                   <span>${grandTotal}</span>
                 </div>
 
+                {/* ERROR MESSAGE DISPLAY */}
+                {errorMessage && (
+                  <div className="alert alert-danger py-2 small text-center mb-3">
+                    {errorMessage}
+                  </div>
+                )}
+
                 {!isPaid ? (
                   <Button 
                     variant="primary" 
                     size="lg" 
                     className="w-100 rounded-pill shadow-sm"
-                    onClick={() => setIsPaid(true)}
-                    disabled={nights === 0} // Disable if dates aren't picked
+                    onClick={handlePayment} 
+                    // I removed the 'disabled' prop so the user can CLICK and see the error message
                   >
                     {nights > 0 ? `Pay $${grandTotal}` : 'Select Dates'}
                   </Button>
